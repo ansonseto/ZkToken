@@ -1,0 +1,27 @@
+{
+  "name": "rollupnc_tutorial",
+  "version": "1.0.0",
+  "description": "This is a [circom](https://github.com/iden3/circom) and [snarkjs](https://github.com/iden3/snarkjs) / [websnark](https://github.com/iden3/websnark) tutorial, using [RollupNC](https://github.com/barryWhiteHat/RollupNC) as an example. It takes you through how to build RollupNC, circuit by circuit, with generated inputs to test the circuits out.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/therealyingtong/RollupNC_tutorial.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/therealyingtong/RollupNC_tutorial/issues"
+  },
+  "homepage": "https://github.com/therealyingtong/RollupNC_tutorial#readme",
+  "dependencies": {
+    "blake-hash": "2.0.0",
+    "blake2b": "^2.1.4",
+    "circom": "0.0.28",
+    "markdown-toc": "^1.2.0",
+    "snarkjs": "git+https://github.com/tornadocash/snarkjs.git#869181cfaf7526fe8972073d31655493a04326d5",
+    "web3": "^1.7.4"
+  }
+}
