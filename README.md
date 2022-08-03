@@ -3,11 +3,11 @@
 tutortial: https://github.com/therealyingtong/RollupNC
 
 ---------------- Problem to solve ----------------------------
+
 Successful in verifying:  util/1_generate_withdraw_signature.js with output "true" (meaning valid signature). BUT......
 
 [util/1_generate_multiple_sample.js]
-
-Fixing bigInt problems. 
+- Fixing bigInt problems. 
 
 ---------------- Pacakages versions ----------------------------
 
