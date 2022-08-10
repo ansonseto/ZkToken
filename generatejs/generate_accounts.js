@@ -1,10 +1,4 @@
-const eddsa = require("../src/eddsa.js");
-const snarkjs = require("snarkjs");
-const fs = require("fs");
-const util = require("util");
-const mimcjs = require("../src/mimc7.js");
-
-const bigInt = snarkjs.bigInt;
+const eddsa = require("../circomlib/src/eddsa.js");
 
 module.exports = {
     
@@ -13,7 +7,6 @@ module.exports = {
         for (i = 1; i < n+1; i++) {
             var prvKey = Buffer.from(
                 i.toString().padStart(64,'0'), "hex");
-            // console.log(prvKey);
             prvKeys.push(prvKey);
         }
         return prvKeys;  
@@ -32,7 +25,6 @@ module.exports = {
         return pubKeys; 
     },
 
-    
     getPubKeysX: function(pubKeys){
         if (Array.isArray(pubKeys[0])){
             var pubKeysX = [];
@@ -59,15 +51,22 @@ module.exports = {
         return pubKeysY;
     },
 
+    // used for withdrawal function
+    // as user send tokens to zero address (burning address on chain)
+    // smart contract call withdrawal() to transfer money from zero address to specified address
     zeroAddress: function(){
         return [BigInt("0".padStart(76,'0')), BigInt("0".padStart(77,'0'))]
     },
 
+    // checked if user is sending to zero address?
     isZeroAddress: function(x, y){
         let zeroAddress = module.exports.zeroAddress();
         return (x == zeroAddress[0] && y == zeroAddress[1])
     },
 
+    // coordinator responsible for batching all transactions in the rollup and post them on-chain
+    // coordinator also generate validity proof for those batches 
+    // anyone can bid to become a coordinator and if their bid succeed, they earn the righ tto create a batch of transaction and keep the transaction fees from that batch 
     coordinatorPrvKey: function(){
         return prvKey = Buffer.from('1'.toString().padStart(64,'0'), "hex");
     },
@@ -76,7 +75,5 @@ module.exports = {
         const prvKey = module.exports.coordinatorPrvKey()
         return module.exports.generatePubKeys([prvKey])[0]
     }
-
-    
 
 }

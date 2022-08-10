@@ -1,4 +1,4 @@
-const mimcjs = require("../src/mimc7.js");
+const mimcjs = require("../circomlib/src/mimc7.js");
 const bigInt = require("snarkjs").bigInt;
 const balanceLeaf = require("./generate_balance_leaf.js")
 
@@ -17,6 +17,7 @@ module.exports = {
         return zeroCache
     },
 
+    // proofing that these transcations are in the merkle tree, and give the proof to smart contract. 
     getProof: function(leafIdx, tree, leaves){
         depth = tree.length;
         proofIdx = module.exports.proofIdx(leafIdx, depth);
@@ -28,6 +29,7 @@ module.exports = {
         return proof;
     },
 
+    // get proof of empty node 
     getProofEmpty: function(height, zeroCache){
         const depth = zeroCache.length
         if (height < depth){
@@ -37,11 +39,13 @@ module.exports = {
         }
     },
 
+    // verify the new merkle root is the current state root 
     verifyProof: function(leaf, idx, proof, root){
         computed_root = module.exports.rootFromLeafAndPath(leaf, idx, proof)
         return (root == computed_root)
     },
 
+    // get root
     rootFromLeafAndPath: function(leaf, idx, merkle_path){
         if (merkle_path.length > 0){
             const depth = merkle_path.length
@@ -95,6 +99,7 @@ module.exports = {
         }
     },
 
+    // get whole merkle tree hashes 
     treeFromLeafArray: function(leafArray){
         depth = module.exports.getBase2Log(leafArray.length);
         tree = Array(depth);
@@ -109,16 +114,18 @@ module.exports = {
         return tree
     },
 
+    // get merkle tree root (top root)
     rootFromLeafArray: function(leafArray){
         return module.exports.treeFromLeafArray(leafArray)[0][0]
     },
 
+    // hash two adjacent hashes together 
     pairwiseHash: function(array){
         if (array.length % 2 == 0){
             arrayHash = []
             for (i = 0; i < array.length; i = i + 2){
                 arrayHash.push(mimcjs.multiHash(
-                    [array[i],array[i+1]]
+                    [array[i].toString(),array[i+1].toString()]
                 ))
             }
             return arrayHash
@@ -127,15 +134,17 @@ module.exports = {
         }
     },
 
+    // where the tranastions are located in teh merkle root????
     generateMerklePosArray: function(depth){
         merklePosArray = [];
-        for (i = 0;  i < bigInt('2')**depth; i++){
+        for (i = 0;  i < 2**depth; i++){
             binPos = module.exports.idxToBinaryPos(i, depth)
             merklePosArray.push(binPos)
         }
         return merklePosArray;
     },
 
+    // proof the position of the transaction in merkle tree?
     generateMerkleProofArray: function(txTree, txLeafHashes){
         txProofs = new Array(txLeafHashes.length)
         for (jj = 0; jj < txLeafHashes.length; jj++){

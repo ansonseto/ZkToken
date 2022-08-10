@@ -1,4 +1,4 @@
-const eddsa = require("../src/eddsa.js");
+const eddsa = require("../circomlib/src/eddsa.js");
 const txLeaf = require("./generate_tx_leaf.js");
 const account = require("./generate_accounts.js");
 const merkle = require("./MiMCMerkle.js");

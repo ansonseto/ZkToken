@@ -1,4 +1,4 @@
-const eddsa = require("../src/eddsa.js");
+const eddsa = require("../circomlib/src/eddsa.js");
 const txLeaf = require("./generate_tx_leaf.js");
 const account = require("./generate_accounts.js");
 const merkle = require("./MiMCMerkle.js");
@@ -6,7 +6,7 @@ const balance = require("./generate_balance_leaf.js");
 const tx = require("./generate_tx_leaf.js")
 var assert = require('assert');
 
-NONCE_MAX_VALUE = 100;
+NONCE_MAX_VALUE = 10;
 
 module.exports = {
 
@@ -221,6 +221,15 @@ module.exports = {
             newTreeReceiver = merkle.treeFromLeafArray(newLeafHashArrayReceiver)
             newRootReceiver = merkle.rootFromLeafArray(newLeafHashArrayReceiver)
 
+            // updae root transition
+            const newRoot = intermediateRoots[2**(tx_depth + 1)].toString()
+            const currentState = {currentState:current_state}
+            // console.log('newRoot', newRoot.toString())
+            const stateTransition = []
+            stateTransition.push(currentState)
+            fs.writeFileSync('../Build/Rollup/RI.json', JSON.stringify(stateTransition));
+            fs.writeFileSync('../Build/Rollup/currentState.json', JSON.stringify(currentState));
+    
         return {
             newRootSender: newRootSender, //first intermediate root after updating sender
             newRootReceiver: newRootReceiver, //second intermediate root after updating receiver

@@ -1,10 +1,10 @@
-const mimcjs = require("../src/mimc7.js");
+const mimcjs = require("../circomlib/src/mimc7.js");
 const account = require("./generate_accounts.js");
-const eddsa = require("../src/eddsa.js");
-const {bigInt} = require("snarkjs")
+const eddsa = require("../circomlib/src/eddsa.js");
 
 module.exports = {
 
+    // generate transaction merkle tree
     generateTxLeafArray: function(
         from_x, from_y, to_x, to_y, nonces, amounts, token_types
     ){
@@ -12,13 +12,13 @@ module.exports = {
             txLeafArray = [];
             for (var i = 0; i < from_x.length; i++){
                 leaf = {}
-                leaf['from_x'] = bigInt(from_x[i]);
-                leaf['from_y'] =  bigInt(from_y[i]);
-                leaf['to_x'] =  bigInt(to_x[i]);
-                leaf['to_y'] =  bigInt(to_y[i]);
-                leaf['nonce'] =  bigInt(nonces[i]);
-                leaf['amount'] =  bigInt(amounts[i]);
-                leaf['token_type'] =  bigInt(token_types[i]);
+                leaf['from_x'] = from_x[i];
+                leaf['from_y'] = from_y[i];
+                leaf['to_x'] = to_x[i];
+                leaf['to_y'] = to_y[i];
+                leaf['nonce'] = nonces[i];
+                leaf['amount'] = amounts[i];
+                leaf['token_type'] = token_types[i];
                 txLeafArray.push(leaf);
                 // console.log(i, leaf)
             }
@@ -29,18 +29,19 @@ module.exports = {
 
     },
 
+    // hash transaction merkle tree
     hashTxLeafArray: function(leafArray){
         if (Array.isArray(leafArray)){
             txLeafHashArray = [];
             for (i = 0; i < leafArray.length; i++){
                 leafHash = mimcjs.multiHash([
-                    leafArray[i]['from_x'],
-                    leafArray[i]['from_y'],
-                    leafArray[i]['to_x'],
-                    leafArray[i]['to_y'],
-                    leafArray[i]['nonce'],
-                    leafArray[i]['amount'],
-                    leafArray[i]['token_type']
+                    leafArray[i]['from_x'].toString(),
+                    leafArray[i]['from_y'].toString(),
+                    leafArray[i]['to_x'].toString(),
+                    leafArray[i]['to_y'].toString(),
+                    leafArray[i]['nonce'].toString(),
+                    leafArray[i]['amount'].toString(),
+                    leafArray[i]['token_type'].toString()
                 ])
                 txLeafHashArray.push(leafHash)
             }
@@ -50,6 +51,7 @@ module.exports = {
         }
     },
 
+    // sign the transaction 
     signTxLeafHashArray: function(leafHashArray, prvKeys){
         if (Array.isArray(leafHashArray)){
             signatures = [];
@@ -63,6 +65,7 @@ module.exports = {
         }
     },
 
+    // get signature of sender transaction 
     getSignaturesR8x: function(signatures){
         R8xArray = new Array(signatures.length)
         for (i = 0; i < signatures.length; i++){
@@ -71,6 +74,7 @@ module.exports = {
         return R8xArray
     },
 
+    // get signature of sender transaction 
     getSignaturesR8y: function(signatures){
         R8yArray = new Array(signatures.length)
         for (i = 0; i < signatures.length; i++){
@@ -79,6 +83,7 @@ module.exports = {
         return R8yArray
     },
 
+    // get signature 
     getSignaturesS: function(signatures){
         SArray = new Array(signatures.length)
         for (i = 0; i < signatures.length; i++){
