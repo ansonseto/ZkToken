@@ -21,12 +21,6 @@ NOTE
 - update_state_verifier.circom --> stateUpdate.json
 - update.js --> blocks (i.e., block1.json, block2.json, etc)
 
----------------- Problem to solve ----------------------------
-
-Block 2 error when calculating witness. 
-Command: npx snarkjs calculatewitness -c ../circuits/stateUpdate.json -i ./Block/block2.json
-![image](https://user-images.githubusercontent.com/61979765/183957102-4516c780-5528-4905-a4c7-a92cad8f98ed.png)
-
 
 ---------------- Pacakages versions ----------------------------
 
