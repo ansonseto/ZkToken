@@ -31,3 +31,12 @@ Circomlib:
 
 Snarkjs 
 - "snarkjs": "git+https://github.com/adria0/snarkjs.git  ",
+
+
+
+
+
+
+
+Proof on-chain on Ethereum Kovan Testnet:
+https://kovan.etherscan.io/address/0x2251DB2Ae1c9572FcfE104c0c438b4062048BD27#readContract
